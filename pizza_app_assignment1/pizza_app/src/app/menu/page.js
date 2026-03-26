@@ -1,77 +1,109 @@
 'use client';
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import {ThemeProvider } from '@mui/material/styles';
-import { createTheme } from '@mui/material/styles';
-import { green, purple } from '@mui/material/colors';
-import { useState, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation';
+import {Container,Typography,Link,Button,Card,CardActionArea,CardMedia,CardContent} from '@mui/material';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { green } from '@mui/material/colors';
+import { useState, useEffect } from 'react';
 
 export default function Page() {
-  const [data, setData] = useState(null)
+
+  const searchParams = useSearchParams();
+  const username = searchParams.get("username");   // ✅ FIXED: now defined
+
+  const [data, setData] = useState(null);
 
   useEffect(() => {
-        fetch('http://localhost:3000/api/getProducts')
-          .then((res) => res.json())
-          .then((data) => {
-            setData(data)
-          })
-  }, [])
+    fetch('http://localhost:3000/api/getProducts')
+      .then((res) => res.json())
+      .then((data) => {
+        setData(data);
+      });
+  }, []);
 
-  if (!data) return <p>Loading</p>
+  if (!data) return <p>Loading</p>;
 
   const theme = createTheme({
-        palette: {
-          secondary: {
-            main: green[500],
-          },
-        },
+    palette: {
+      secondary: {
+        main: green[500],
+      },
+    },
   });
 
-  return (
-        <ThemeProvider theme={theme}>
-        <Container component="main"  maxWidth="xs">
-           <div style={{fontSize: '40px'}} > Dashboard</div>
+ const ProductCard = ({ item }) => (
+    <Card sx={{ minWidth: 345,maxWidth: 345,height: 350, marginBottom: 3,backgroundColor: "#ababab" }}>
+      <CardActionArea component={Link} href={`/viewSingleProduct?id=${item._id}`}>
+        <CardMedia
+        
+          component="img"
+          height="180"
+          image={item.img}
+          alt={item.pname}
+        />
+        <CardContent>
+          <Typography gutterBottom variant="h6" component="div">
+            {item.pname}       €{item.basePrice}
+          </Typography>
 
-            <div>
-          {
-            data.map((item, i) => (
-              <div style={{padding: '20px'}} key={i} >
-                
-                
-                <br></br>
-                <Link href={`/viewSingleProduct?id=${item._id}`}>
-                <img src={item.img} />
-                </Link>
-                {item.description}
-                <br></br>
-                {item.pname}
-                -
-                {item.basePrice}
-                <br></br>
-                <Button variant="outlined"> Add to cart </Button>
-              </div>
-            ))
-          }
+          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+            {item.description}
+          </Typography>
 
-        </div>
-
-
-        </Container>
-
-
-        </ThemeProvider>
-
-
+          <Typography variant="body1" sx={{ marginTop: 1 }}>
+            
+          </Typography>
+        </CardContent>
+      </CardActionArea>
+    </Card>
   );
 
+  return (
+    <ThemeProvider theme={theme}>
+<Container component="main" maxWidth="lg">
+  <div className="banner"><h3>PIZZA</h3></div>
+
+  <Grid container spacing={2}>
+    {data.slice(0,9).map((item, i) => (
+      <Grid item xs={12} sm={6} md={4} key={i}>
+        <ProductCard item={item} />
+      </Grid>
+    ))}
+  </Grid>
+</Container>
+
+<Container component="main" maxWidth="lg">
+  <div className="banner"><h3>DRINKS</h3></div>
+
+  <Grid container spacing={2}>
+    {data.slice(9,12).map((item, i) => (
+      <Grid item xs={12} sm={6} md={4} key={i}>
+        <ProductCard item={item} />
+      </Grid>
+    ))}
+  </Grid>
+</Container>
+
+<Container component="main" maxWidth="lg">
+  <div className="banner"><h3>SIDES</h3></div>
+
+  <Grid container spacing={2}>
+    {data.slice(12,15).map((item, i) => (
+      <Grid item xs={12} sm={6} md={4} key={i}>
+        <ProductCard item={item} />
+      </Grid>
+    ))}
+  </Grid>
+</Container>
+
+
+    </ThemeProvider>
+  );
 }

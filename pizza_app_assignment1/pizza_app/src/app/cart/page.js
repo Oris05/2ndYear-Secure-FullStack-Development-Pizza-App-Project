@@ -1,71 +1,101 @@
 'use client';
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import {ThemeProvider } from '@mui/material/styles';
-import { createTheme } from '@mui/material/styles';
-import { green, purple } from '@mui/material/colors';
-import { useState, useEffect } from 'react'
+import { Button, Container, Typography } from '@mui/material';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { green } from '@mui/material/colors';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 
 export default function Page() {
-  const [data, setData] = useState(null)
+  const [data, setData] = useState(null);
+  const searchParams = useSearchParams();
+  const username = searchParams.get("username");
+
+  const fetchCart = () => {
+    let url = username
+      ? `/api/getCart?username=${username}`
+      : `/api/getCart`;
+
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => setData(data));
+  };
 
   useEffect(() => {
-        fetch('http://localhost:3000/api/getCart')
-          .then((res) => res.json())
-          .then((data) => {
-            setData(data)
-          })
-  }, [])
+    fetchCart();
+  }, [username]);
 
-  if (!data) return <p>Loading</p>
+  const deleteItem = async (id) => {
+    await fetch(`/api/deleteCart?id=${id}`);
+    fetchCart();
+  };
+
+  if (!data) return <p>Loading</p>;
 
   const theme = createTheme({
-        palette: {
-          secondary: {
-            main: green[500],
-          },
-        },
+    palette: {
+      secondary: { main: green[500] },
+    },
   });
 
   return (
-        <ThemeProvider theme={theme}>
-        <Container component="main"  maxWidth="xs">
-           <div style={{fontSize: '40px'}} > WELCOME TO THE CART</div>
+    <ThemeProvider theme={theme}>
+      <Container component="main" maxWidth="xs">
+        <div style={{ fontSize: '40px', marginBottom: '20px' }}>
+          WELCOME TO THE CART
+        </div>
 
-            <div>
-          {
-            data.map((item, i) => (
-              <div style={{padding: '20px'}} key={i} >       
-                <br></br>
-                <img src={item.img} />
-                {item.des}
-                <br></br>
-                {item.item}
-                {item.size}
-                -
-                {item.price}
-                <br></br>
+        <div>
+          {data.map((item) => (
+            <div
+              key={item._id}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '12px 10px',
+                marginBottom: '12px',
+                border: '1px solid #ccc',
+                borderRadius: '8px'
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <img
+                  src={item.img}
+                  style={{
+                    width: '60px',
+                    height: '60px',
+                    objectFit: 'cover',
+                    borderRadius: '6px'
+                  }}
+                />
+
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                    {item.item} {item.size}
+                  </Typography>
+                  <Typography variant="body2">€{item.price}</Typography>
+                </div>
               </div>
-              
-            ))
-          }
-          <Link href={`/purchase`}>
-                <Button variant="contained">Purchase now</Button>
+
+              <Button
+                variant="outlined"
+                color="error"
+                onClick={() => deleteItem(item._id)}
+              >
+                X
+              </Button>
+            </div>
+          ))}
+
+          <Link href={`/purchase?username=${username || ""}`}>
+            <Button variant="contained" fullWidth>
+              Purchase now
+            </Button>
           </Link>
         </div>
-        </Container>
-        </ThemeProvider>
-
-        
+      </Container>
+    </ThemeProvider>
   );
 }

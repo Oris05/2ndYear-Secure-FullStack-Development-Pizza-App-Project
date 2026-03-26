@@ -1,114 +1,146 @@
 'use client';
 
 import * as React from 'react';
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 import { useSearchParams } from "next/navigation";
-import { TextField, Button, Box } from '@mui/material';
+import {
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  Button,
+  Box
+} from '@mui/material';
 
 export default function Page() {
-  // this performs the actual call to the back-end API page.
-  // the URL variable is passed into this function from the handleClick() function
+
   async function callTheAPI(url){
-
-      const res = await fetch(url);
-      const data = await res.json();
-      console.log("API Call finished");
-
+    const res = await fetch(url);
+    const data = await res.json();
+    console.log("API Call finished");
   }
-  const handleClick = (item,des,size,price,img) => {
-
-    console.log("Sending to API:", item);
-
-    // this is where we send data to the API back-end page
-    // we are sending across the variable "item"
-    // callTheAPI(`http://localhost:3000/api/addToCart?item=`+item+des+size+price+img)
-    const url = 
-      "http://localhost:3000/api/addToCart"+
-      "?item="+item+
-      "&des="+des+
-      "&size="+size+
-      "&price="+price+
-      "&img="+img;
-
-      callTheAPI(url);
-
-  };
-  // catch the ID from the URL
 
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
 
-  // this is where we store the product
-  // when it is returned from the API.
+  const storedUsername = typeof window !== "undefined"
+    ? localStorage.getItem("username")
+    : null;
 
   const [product, setProduct] = useState(null);
+  const [size, setSize] = useState("small");
 
+  const finalPrice = product
+    ? product.basePrice + (size === "medium" ? 1 : size === "large" ? 2 : 0)
+    : 0;
 
-  // wait until the page is ready
+  const handleClick = () => {
+    const url =
+      "http://localhost:3000/api/addToCart" +
+      "?item=" + product.pname +
+      "&des=" + product.description +
+      "&size=" + size +
+      "&price=" + finalPrice +
+      "&img=" + product.img +
+      "&username=" + storedUsername;
+
+    callTheAPI(url);
+  };
 
   useEffect(() => {
-
     if (!id) return;
 
-          // call the API to get the data for the single product
-          // based on the ID passed to us.
-
     fetch(`/api/getSingleProduct?id=${id}`)
-
       .then((res) => res.json())
-
-      .then((data) => {
-
-        console.log(data);
-
-                    // store the data so we can call it later.
-
-        setProduct(data.item);
-
-      })
-
+      .then((data) => setProduct(data.item))
       .catch(console.error);
 
   }, [id]);
 
+  if (!product) return <p>Loading...</p>;
+
   return (
+    <Box sx={{ display: "flex", justifyContent: "center", mt: 5, }}>
+      <Card className="product-card">
 
-    <div>
+        <CardMedia
+          component="img"
+          image={product.img}
+          alt={product.pname}
+          className="product-img"
+        />
 
-      <div>Product ID: {id}</div>
+        <CardContent className="product-content">
 
-      {product ? (
+          <Typography variant="h4" className="product-title">
+            {product.pname}
+          </Typography>
 
+          <Typography variant="h6" className="product-description">
+            {product.description}
+          </Typography>
 
-        <div>
-          <img src={product.img} /> 
-            
-          {product.description}
-          
-          <br></br>
-         <p>Product name: {product.pname} </p>
+          <Typography variant="h5" className="product-price">
+            Base Price: {product.basePrice}€
+          </Typography>
 
-         <p> Product price: {product.basePrice}</p>
+          {/* Size selector */}
+          <Box className="size-box">
+            <Typography variant="h5" className="size-title">
+              Select Size:
+            </Typography>
 
-        <Button
-          variant="contained"
-                            //+item+des+size+price+img
-          onClick={() => handleClick(product.pname,
-                                    product.description,
-                                    product.sizes,
-                                    product.basePrice,
-                                    product.img
-          )}
-          sx={{ mt: 2 }}
-        >
-        Order Now
-        </Button>
+            <div className="size-row">
+              <label>
+                <input
+                  type="radio"
+                  value="small"
+                  checked={size === "small"}
+                  onChange={() => setSize("small")}
+                />
+                Small (+0€)
+              </label>
 
-        </div>
+              <label>
+                <input
+                  type="radio"
+                  value="medium"
+                  checked={size === "medium"}
+                  onChange={() => setSize("medium")}
+                />
+                Medium (+1€)
+              </label>
 
-      ) : (
-        <p>Loading...</p>
-      )}
-    </div>
+              <label>
+                <input
+                  type="radio"
+                  value="large"
+                  checked={size === "large"}
+                  onChange={() => setSize("large")}
+                />
+                Large (+2€)
+              </label>
+            </div>
+          </Box>
+
+          <Typography variant="h4" className="final-price">
+            Final Price: <strong>{finalPrice}€</strong>
+          </Typography>
+
+        </CardContent>
+
+        <Box sx={{ backgroundColor:"#adadad",p: 3}}>
+          <Button
+            variant="contained"
+            fullWidth
+            className="order-btn"
+            onClick={handleClick}
+          >
+            Order Now
+          </Button>
+        </Box>
+
+      </Card>
+    </Box>
   );
 }

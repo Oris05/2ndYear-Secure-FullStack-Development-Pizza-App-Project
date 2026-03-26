@@ -9,6 +9,9 @@
     --foreground: #ededed;
   }
 }
+h4 {
+  text-align: center;
+}
 
 html {
   height: 100%;
@@ -46,8 +49,279 @@ img{
   width: 100%;
 }
 
+header {
+  display: flex;
+  justify-content: space-between;   /* h1 left, nav right */
+  align-items: center;
+  padding: 20px 40px;
+  background-color: #000;           /* black background */
+  color: #E0E0E0;                   /* soft text color */
+}
+
+header h1 {
+  font-size: 2rem;                  /* slightly larger */
+  margin: 0;
+  color: #F0F0F0;                   /* soft white, not harsh */
+  letter-spacing: 1px;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;                        /* spacing between links */
+  margin: 0;
+  padding: 0;
+}
+
+
+
+nav ul li a {
+  text-decoration: none;
+  font-size: 1.4rem;                /* large readable text */
+  color: #C7C7D1;                   /* soft gray-blue */
+  transition: color 0.2s ease;
+}
+
+nav ul li a:hover {
+  color: #ffffff;                   /* gentle highlight */
+}
+
+#under_header_nav {
+  display: flex;
+  justify-content: center;   /* centers the nav horizontally */
+  padding: 15px 0;
+  background-color: #000;    /* matches your dark theme */
+}
+
+#under_header_nav ul {
+  list-style: none;
+  display: flex;
+  gap: 25px;                 /* spacing between links */
+  margin: 0;
+  padding: 0;
+}
+
+#under_header_nav ul li a {
+  text-decoration: none;
+  font-size: 1.3rem;
+  color: #C7C7D1;            /* soft gray-blue text */
+  transition: color 0.2s ease;
+}
+
+#under_header_nav ul li a:hover {
+  color: #ffffff;            /* gentle highlight */
+}
+footer {
+  background-color: #000;        /* black background */
+  padding: 20px 0;
+  text-align: center;
+  margin-top: 40px;
+  border-top: 0.5px solid #dcbaba; /* clean white top border */
+}
+
+footer p {
+  color: #C7C7D1;                /* soft gray text */
+  font-size: 1.2rem;
+  margin: 0;
+  letter-spacing: 0.5px
+}
+hr{
+ border: none;
+  border-top: 1px solid #dcbaba;   /* subtle line */
+  
+}
+.banner {
+  text-align: center;      /* centers the text */
+  margin: 20px 0;          /* small space around the banner */
+}
+
+.banner h3 {
+  font-size: 3rem;         /* very large text */
+  font-weight: 600;        /* bold but clean */
+  color: #E0E0E0;          /* soft light gray for dark theme */
+  margin: 10px 0;          /* small margin around the text */
+}
+.product-card {
+  background-color:#adadad;
+  max-width: 900px;
+  width: 100%;
+  box-shadow: 4px 4px 20px rgba(0,0,0,0.15);
+  border-radius: 12px;
+  text-align: center;
+}
+
+.product-img {
+  height: 400px;
+  object-fit: cover;
+  border-radius: 12px 12px 0 0;
+}
+
+.product-content {
+  padding: 30px;
+  background-color:#adadad;
+}
+
+.product-title {
+  font-size: 2.2rem;
+  font-weight: bold;
+}
+
+.product-description {
+  font-size: 1.3rem;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.product-price {
+  font-size: 1.6rem;
+  margin-bottom: 25px;
+}
+
+.size-box {
+  margin-bottom: 25px;
+}
+
+.size-title {
+  margin-bottom: 10px;
+}
+
+.size-row {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  font-size: 1.3rem;
+}
+
+.size-row label {
+  cursor: pointer;
+}
+
+.final-price {
+  margin-top: 20px;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.order-btn {
+  font-size: 1.4rem;
+  padding: 12px;
+}
+
+/* Remove hover effects */
+.MuiCardActionArea-root:hover {
+  background: none !important;
+  background-color:#adadad;
+}
+#intro {
+  width: 93%;
+  min-height: 20rem;
+  text-align: center;
+  background-color: #ededed;
+  background-image: url('/images/8.jpg');
+  background-size: cover;
+  background-position: center;
+}
+#intro h4{
+  padding-top: 5rem;
+  font-size: 60px;
+}
+
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
   }
+
+  /* ====== 1000px ====== */
+@media (max-width: 1000px) {
+  #intro h4{
+  padding-top: 5rem;
+  font-size: 50px;
+}
+nav ul { 
+  gap: 18px;                        /* spacing between links */
+}
+nav ul li a {
+  font-size: 1.3rem;                /* large readable text */
+}
+header h1 {
+  font-size: 2rem;                  /* slightly larger */
+  margin: 0;
+  color: #F0F0F0;                   /* soft white, not harsh */
+  letter-spacing: 1px;
+}
+
+header {
+  padding: 10px ;
+}
+
+header h1 {
+  font-size: 1.6rem;                  /* slightly larger */
+}
+}
+
+/* ====== 800px ====== */
+@media (max-width: 800px) {
+  #intro h4{
+  padding-top: 5rem;
+  font-size: 40px;
+}
+nav ul { 
+  gap: 14px;                        /* spacing between links */
+}
+nav ul li a {
+  font-size: 1.2rem;                /* large readable text */
+}
+
+header {
+  padding: 10px ;
+}
+
+header h1 {
+  font-size: 1.3rem;                  /* slightly larger */
+}
+}
+
+/* ====== 600px ====== */
+@media (max-width: 600px) {
+  #intro h4{
+  padding-top: 5rem;
+  font-size: 30px;
+}
+nav ul { 
+  gap: 10px;                        /* spacing between links */
+}
+nav ul li a {
+  font-size: 0.8rem;                /* large readable text */
+}
+header {
+  padding: 10px ;
+}
+
+header h1 {
+  font-size: 1.2rem;                  /* slightly larger */
+}
+}
+
+/* ====== 400px ====== */
+@media (max-width: 400px) {
+  #intro h4{
+  padding-top: 5rem;
+  font-size: 30px;
+}
+nav ul { 
+  gap: 10px;                        /* spacing between links */
+}
+nav ul li a {
+  font-size: 0.8rem;                /* large readable text */
+}
+header {
+  padding: 10px ;
+}
+
+header h1 {
+  font-size: 1rem;                  /* slightly larger */
+}
+}
+
 }

@@ -8,8 +8,9 @@ export async function GET(req) {
   const size = searchParams.get('size');
   const price = searchParams.get('price');
   const img = searchParams.get('img');
+  const username = searchParams.get('username');   // ✅ NEW
 
-  console.log({ item, des, size, price, img });
+  console.log({ item, des, size, price, img, username });
 
   const { MongoClient } = require('mongodb');
 
@@ -24,13 +25,14 @@ export async function GET(req) {
   const db = client.db(dbName);
   const collection = db.collection('cart');
 
-  // Insert ONLY these fields
+  // Insert username along with the item
   const result = await collection.insertOne({
     item,
     des,
     size,
     price,
-    img
+    img,
+    username   
   });
 
   return Response.json({ data: "ok" });
