@@ -3,11 +3,11 @@ export async function GET(req) {
 
   const { searchParams } = new URL(req.url);
 
-  const username = searchParams.get('username');
-  const pass = searchParams.get('pass');
-  const firstname = searchParams.get('firstname');
-  const secondname = searchParams.get('secondname');
-  const address = searchParams.get('address');
+  const username = searchParams.get('username')?.trim();
+  const pass = searchParams.get('pass')?.trim();
+  const firstname = searchParams.get('firstname')?.trim();
+  const secondname = searchParams.get('secondname')?.trim();
+  const address = searchParams.get('address')?.trim();
 
   console.log({ username, pass, firstname, secondname, address });
 
@@ -22,9 +22,9 @@ export async function GET(req) {
   console.log('Connected successfully to server');
 
   const db = client.db(dbName);
-  const collection = db.collection('users');   // ✅ correct collection
+  const collection = db.collection('users');
 
-  // Insert user record
+  // Insert user record (now trimmed)
   const result = await collection.insertOne({
     username,
     pass,

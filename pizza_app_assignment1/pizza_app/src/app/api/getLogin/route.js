@@ -1,13 +1,7 @@
 export async function GET(req, res) {
-
-  const { searchParams } = new URL(req.url)
-  const username = searchParams.get('username')   // changed
-  const pass = searchParams.get('pass')
-
-  console.log(username);
-  console.log(pass);
-
-  console.log("in the api page")
+  const { searchParams } = new URL(req.url);
+  const username = searchParams.get('username');
+  const pass = searchParams.get('pass');
 
   const { MongoClient } = require('mongodb');
   const url = 'mongodb://root:example@localhost:27017/';
@@ -16,14 +10,12 @@ export async function GET(req, res) {
   const dbName = 'app';
   await client.connect();
 
-  console.log('Connected successfully to server');
-
   const db = client.db(dbName);
   const collection = db.collection('users');
 
-  const findResult = await collection.find({ "username": username }).toArray(); // changed
+  // ⭐ Correct login check
+  const user = await collection.findOne({ username, pass });
 
-  console.log('Found documents =>', findResult);
-
-  return Response.json(findResult)
+  // ⭐ Return array to match your frontend logic
+  return Response.json(user ? [user] : []);
 }
