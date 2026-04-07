@@ -1,5 +1,4 @@
 export async function GET(req, res) {
-  console.log("in the api page");
 
   // mongo import + connection
   const { MongoClient } = require('mongodb');
@@ -12,7 +11,7 @@ export async function GET(req, res) {
   console.log('Connected successfully to server');
 
   const db = client.db(dbName);
-  const collection = db.collection('cart'); // cart collection
+  const collection = db.collection('orders'); // past order collection
 
   // read ?user=
   const { searchParams } = new URL(req.url);

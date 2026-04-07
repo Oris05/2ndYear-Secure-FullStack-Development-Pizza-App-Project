@@ -14,15 +14,17 @@ import {
 
 export default function Page() {
 
-  async function callTheAPI(url){
+  // simple API helper
+  async function callTheAPI(url) {
     const res = await fetch(url);
-    const data = await res.json();
+    await res.json();
     console.log("API Call finished");
   }
 
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
 
+  // username from localStorage
   const storedUsername = typeof window !== "undefined"
     ? localStorage.getItem("username")
     : null;
@@ -30,13 +32,26 @@ export default function Page() {
   const [product, setProduct] = useState(null);
   const [size, setSize] = useState("small");
 
-  const finalPrice = product
-    ? product.basePrice + (size === "medium" ? 1 : size === "large" ? 2 : 0)
-    : 0;
+  // calculate final price
+  let finalPrice = 0;
 
+  if (product) {
+    // start with base price
+    finalPrice = product.basePrice;
+    // add extra for size
+  if (size === "medium") {
+    finalPrice = finalPrice + 1;
+  }
+  if (size === "large") {
+    finalPrice = finalPrice + 2;
+  }
+}
+
+
+  // add to cart
   const handleClick = () => {
     const url =
-      "http://localhost:3000/api/addToCart" +
+      "/api/addToCart" +
       "?item=" + product.pname +
       "&des=" + product.description +
       "&size=" + size +
@@ -47,6 +62,7 @@ export default function Page() {
     callTheAPI(url);
   };
 
+  // load product
   useEffect(() => {
     if (!id) return;
 
@@ -60,7 +76,7 @@ export default function Page() {
   if (!product) return <p>Loading...</p>;
 
   return (
-    <Box sx={{ display: "flex", justifyContent: "center", mt: 5, }}>
+    <Box sx={{ display: "flex", justifyContent: "center", mt: 5 }}>
       <Card className="product-card">
 
         <CardMedia
@@ -84,7 +100,7 @@ export default function Page() {
             Base Price: {product.basePrice}€
           </Typography>
 
-          {/* Size selector */}
+          {/* size selector */}
           <Box className="size-box">
             <Typography variant="h5" className="size-title">
               Select Size:
@@ -129,7 +145,7 @@ export default function Page() {
 
         </CardContent>
 
-        <Box sx={{ backgroundColor:"#adadad",p: 3}}>
+        <Box sx={{ backgroundColor: "#adadad", p: 3 }}>
           <Button
             variant="contained"
             fullWidth

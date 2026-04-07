@@ -21,7 +21,7 @@ export default function RegisterPage() {
   const [error, setError] = useState('');
 
   const handleRegister = async () => {
-    // Basic validation
+    // check fields
     if (!username || !pass || !firstname || !secondname || !address) {
       setError("All fields are required");
       return;
@@ -29,7 +29,7 @@ export default function RegisterPage() {
 
     setError("");
 
-    // Check if username already exists
+    // check if username exists
     const check = await fetch(`/api/getLogin?username=${username}&pass=${pass}`);
     const checkData = await check.json();
 
@@ -38,19 +38,15 @@ export default function RegisterPage() {
       return;
     }
 
-    // Register user
+    // register user
     const res = await fetch(
-      `/api/getRegister?username=${username}
-                           &pass=${pass}
-                           &firstname=${firstname}
-                           &secondname=${secondname}
-                           &address=${address}`
+      `/api/getRegister?username=${username}&pass=${pass}&firstname=${firstname}&secondname=${secondname}&address=${address}`
     );
 
     const data = await res.json();
 
     if (data.data === "ok") {
-      router.push("/login");   // redirect to login page
+      router.push("/login");
     }
   };
 

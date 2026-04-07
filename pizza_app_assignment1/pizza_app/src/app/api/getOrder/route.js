@@ -1,31 +1,20 @@
-export async function GET(req) {
-  console.log("In the api page");
+export async function POST(req) {
+  // read array of items
+  const items = await req.json(); // [{item, price}, ...]
 
-  const { searchParams } = new URL(req.url);
-
-  const item = searchParams.get('name');
-  const price = searchParams.get('price');
-
-  console.log({ item,price});
-
+  // mongo connection
   const { MongoClient } = require('mongodb');
-
   const url = 'mongodb://root:example@localhost:27017/';
   const client = new MongoClient(url);
 
   const dbName = 'app';
-
   await client.connect();
-  console.log('Connected successfully to server');
 
   const db = client.db(dbName);
-  const collection = db.collection('orders');
+  const collection = db.collection('orders'); // orders collection
 
-  // Insert ONLY these fields
-  const result = await collection.insertOne({
-    item,
-    price
-  });
+  // insert many items
+  await collection.insertMany(items);
 
   return Response.json({ data: "ok" });
 }

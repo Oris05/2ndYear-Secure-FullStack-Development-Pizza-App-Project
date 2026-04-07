@@ -1,16 +1,9 @@
 'use client';
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { ThemeProvider } from '@mui/material/styles';
-import { createTheme } from '@mui/material/styles';
+import {
+  Button, Container, Typography, TextField, Box
+} from '@mui/material';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { green } from '@mui/material/colors';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -25,28 +18,27 @@ export default function Page() {
 
   const router = useRouter();
 
+  // load cart
   useEffect(() => {
-    fetch('http://localhost:3000/api/getCart')
+    fetch('/api/getCart')
       .then((res) => res.json())
-      .then((data) => {
-        setData(data);
-      });
+      .then((data) => setData(data));
   }, []);
 
   const theme = createTheme({
     palette: {
-      secondary: {
-        main: green[500],
-      },
+      secondary: { main: green[500] },
     },
   });
 
   if (!data) return <p>Loading</p>;
 
+  // total price
   const priceArray = data.map((item) => Number(item.price));
   const total = priceArray.reduce((sum, num) => sum + num, 0);
 
   const handlePurchase = async () => {
+    // check fields
     if (!name || !card || !cvv) {
       setError('All fields are required');
       return;
@@ -56,8 +48,15 @@ export default function Page() {
 
     const username = localStorage.getItem("username");
 
-    // Delete all cart items for this user (or null/empty usernames)
-    await fetch(`http://localhost:3000/api/removeFromCart?username=${username}`);
+    // send cart items to orders
+    await fetch("/api/getOrder", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+
+    // clear cart
+    await fetch(`/api/removeFromCart?username=${username}`);
 
     router.push('/confirmation');
   };

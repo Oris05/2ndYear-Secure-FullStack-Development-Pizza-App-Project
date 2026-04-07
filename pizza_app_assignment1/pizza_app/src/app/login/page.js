@@ -16,6 +16,7 @@ export default function LoginPage() {
   const router = useRouter();
 
   const handleLogin = async () => {
+    // check fields
     if (!username || !pass) {
       setError('All fields are required');
       return;
@@ -23,19 +24,20 @@ export default function LoginPage() {
 
     setError('');
 
-    // Call your API
+    // login api
     const res = await fetch(`/api/getLogin?username=${username}&pass=${pass}`);
     const data = await res.json();
 
+    // no user found
     if (data.length === 0) {
       setError("Username doesn't exist");
       return;
     }
 
-    // ⭐ Save username locally
+    // save username
     localStorage.setItem("username", username);
 
-    // ⭐ Redirect with username in URL
+    // go home with user param
     router.push(`/?user=${username}`);
   };
 

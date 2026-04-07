@@ -14,14 +14,14 @@ export default function Page() {
   // get ?user=
   const username = searchParams.get("user");
 
-  // load cart
-  const fetchCart = () => {
+  // load past orders
+  const fetchOrders = () => {
     let url;
 
     if (username) {
-      url = "/api/getCart?user=" + username;
+      url = "/api/showPastOrders?user=" + username;
     } else {
-      url = "/api/getCart";
+      url = "/api/showPastOrders";
     }
 
     fetch(url)
@@ -30,68 +30,23 @@ export default function Page() {
   };
 
   useEffect(() => {
-    fetchCart();
+    fetchOrders();
   }, [username]);
-
-  // delete 1 item
-  const deleteItem = async (id) => {
-    await fetch(`/api/deleteCart?id=${id}`);
-    fetchCart();
-  };
 
   if (!data) return <p>Loading</p>;
 
-  // MUI start here
+  // MUI theme
   const theme = createTheme({
     palette: {
       secondary: { main: green[500] },
     },
   });
-  // MUI end here
-
-  // check if cart is empty
-  let showButton = true;
-  let emptyMessage = "";
-
-  if (data.length === 0){
-    showButton = false;
-    emptyMessage = "Your cart is empty";
-}
-
-  function renderPurchaseSection() {
-    if (showButton) {
-      return (
-        <Link href={`/purchase?user=${username || ""}`}>
-          <Button style={{marginBottom:"10px"}} variant="contained" fullWidth>
-            Purchase now
-          </Button>
-        </Link>
-      );
-    } 
-    else {
-      return (
-        <h6>
-          NOTHING INSIDE THE CART
-        </h6>
-      );
-    }
-  }
-
-  function lookPrevOrders() {
-    return (
-      <Link href={`/past_orders?user=${username || ""}`}>
-        <Button variant="contained" fullWidth>
-          View Previous Orders
-        </Button>
-      </Link>
-    );
-  }
 
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
-        <div style={{ textAlign: "center", fontSize: '30px', marginBottom: '20px' }}>
-          WELCOME TO THE CART
+        <div style={{ fontSize: '40px', marginBottom: '20px' }}>
+          PAST ORDERS
         </div>
 
         <div>
@@ -126,20 +81,8 @@ export default function Page() {
                   <Typography variant="body2">€{item.price}</Typography>
                 </div>
               </div>
-
-              <Button
-                variant="outlined"
-                color="error"
-                onClick={() => deleteItem(item._id)}
-              >
-                X
-              </Button>
             </div>
           ))}
-
-      {/* go to purchase page */}
-      {renderPurchaseSection()}
-      {lookPrevOrders()}
         </div>
       </Container>
     </ThemeProvider>

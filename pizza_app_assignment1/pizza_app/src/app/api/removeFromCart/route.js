@@ -1,32 +1,36 @@
 import { MongoClient } from "mongodb";
 
 export async function GET(req) {
+  // read ?username=
   const { searchParams } = new URL(req.url);
-  const username = searchParams.get("username");
+  const username = searchParams.get("username"); // user
 
+  // mongo connection
   const url = "mongodb://root:example@localhost:27017/";
   const client = new MongoClient(url);
   const dbName = "app";
 
-  await client.connect();
+  await client.connect(); // connect to db
   const db = client.db(dbName);
-  const collection = db.collection("cart");
+  const collection = db.collection("cart"); // cart collection
 
-  // If username missing → delete items with null/empty username
-  if (!username || username === "null" || username === "undefined" || username.trim() === "") {
-    await collection.deleteMany({
-      $or: [
-        { username: null },
-        { username: "" },
-        { username: { $exists: false } }
-      ]
-    });
+  // delete items with no username
+  // delete items with no username
+if (!username || username === "null") {
 
-    return Response.json({ success: true, deleted: "null/empty username items" });
+  // make a list of things that count as empty usernames
+  const emptyStuff = [
+    { username: null },
+    { username: "" },
+    { username: { $exists: false } }
+  ];
+
+  // delete everything that matches the list
+  await collection.deleteMany({
+    $or: emptyStuff
+  });
   }
 
-  // Otherwise delete all items for that username
+  // delete items for this username
   await collection.deleteMany({ username });
-
-  return Response.json({ success: true, deleted: username });
 }
