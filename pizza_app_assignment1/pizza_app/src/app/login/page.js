@@ -9,7 +9,9 @@ import {
 } from '@mui/material';
 import { useRouter } from 'next/navigation';
 
-export default function LoginPage() {
+// adding search params within the brackets to avoid a hydration error
+export default function LoginPage({ searchParams }) {
+
   const [username, setUsername] = useState('');
   const [pass, setPass] = useState('');
   const [error, setError] = useState('');

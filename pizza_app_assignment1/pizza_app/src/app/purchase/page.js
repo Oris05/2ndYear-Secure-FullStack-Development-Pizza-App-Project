@@ -16,6 +16,13 @@ export default function Page() {
   const [cvv, setCvv] = useState('');
   const [error, setError] = useState('');
 
+  // NEW ADDRESS FIELDS
+  const [eircode, setEircode] = useState('');
+  const [addr1, setAddr1] = useState('');
+  const [addr2, setAddr2] = useState('');
+  const [addr3, setAddr3] = useState('');
+  const [county, setCounty] = useState('');
+
   const router = useRouter();
 
   // load cart
@@ -39,8 +46,8 @@ export default function Page() {
 
   const handlePurchase = async () => {
     // check fields
-    if (!name || !card || !cvv) {
-      setError('All fields are required');
+    if (!name || !card || !cvv || !eircode || !addr1 || !county) {
+      setError('All required fields must be filled in');
       return;
     }
 
@@ -80,7 +87,63 @@ export default function Page() {
             boxShadow: "0 0 10px rgba(0,0,0,0.4)",
           }}
         >
+          {/* ADDRESS SECTION */}
           <Typography variant="h6" sx={{ color: "#E0E0E0", mb: 2 }}>
+            Delivery Address
+          </Typography>
+
+          <TextField
+            fullWidth
+            label="Eircode (Required)"
+            margin="normal"
+            value={eircode}
+            onChange={(e) => setEircode(e.target.value)}
+            InputLabelProps={{ style: { color: "#aaa" } }}
+            InputProps={{ style: { color: "#fff" } }}
+          />
+
+          <TextField
+            fullWidth
+            label="Address Line 1 (Required)"
+            margin="normal"
+            value={addr1}
+            onChange={(e) => setAddr1(e.target.value)}
+            InputLabelProps={{ style: { color: "#aaa" } }}
+            InputProps={{ style: { color: "#fff" } }}
+          />
+
+          <TextField
+            fullWidth
+            label="Address Line 2 (Optional)"
+            margin="normal"
+            value={addr2}
+            onChange={(e) => setAddr2(e.target.value)}
+            InputLabelProps={{ style: { color: "#aaa" } }}
+            InputProps={{ style: { color: "#fff" } }}
+          />
+
+          <TextField
+            fullWidth
+            label="Address Line 3 (Optional)"
+            margin="normal"
+            value={addr3}
+            onChange={(e) => setAddr3(e.target.value)}
+            InputLabelProps={{ style: { color: "#aaa" } }}
+            InputProps={{ style: { color: "#fff" } }}
+          />
+
+          <TextField
+            fullWidth
+            label="County (Required)"
+            margin="normal"
+            value={county}
+            onChange={(e) => setCounty(e.target.value)}
+            InputLabelProps={{ style: { color: "#aaa" } }}
+            InputProps={{ style: { color: "#fff" } }}
+          />
+
+          {/* PAYMENT SECTION */}
+          <Typography variant="h6" sx={{ color: "#E0E0E0", mt: 4, mb: 2 }}>
             Payment Details
           </Typography>
 

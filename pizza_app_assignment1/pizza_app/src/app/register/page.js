@@ -97,13 +97,6 @@ export default function RegisterPage() {
           value={address}
           onChange={(e) => setAddress(e.target.value)}
         />
-
-        {error && (
-          <Typography color="error" sx={{ mt: 1 }}>
-            {error}
-          </Typography>
-        )}
-
         <Button
           variant="contained"
           fullWidth

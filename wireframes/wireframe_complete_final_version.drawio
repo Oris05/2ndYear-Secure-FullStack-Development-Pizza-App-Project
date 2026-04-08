@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 Edg/146.0.0.0" version="29.6.1" pages="8">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 Edg/146.0.0.0" version="29.6.6" pages="8">
   <diagram name="home" id="zbltha4D97QBdffK25lq">
     <mxGraphModel dx="2799" dy="2072" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -393,7 +393,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="Q4-FTWf7dhE_sByaqrHQ" name="Checkout">
-    <mxGraphModel dx="1657" dy="860" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1418" dy="832" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -401,10 +401,10 @@
           <mxGeometry height="726" width="542" x="120" y="303" as="geometry" />
         </mxCell>
         <mxCell id="1y0lWWYBMQZ4ZxL9ILeE-21" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
-          <mxGeometry height="53" width="542" x="130" y="303" as="geometry" />
+          <mxGeometry height="53" width="542" x="120.5" y="303" as="geometry" />
         </mxCell>
         <mxCell id="1y0lWWYBMQZ4ZxL9ILeE-22" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;font-size =20px;fontSize=32;" value="&lt;font style=&quot;font-size: 22px;&quot;&gt;&amp;nbsp; ORESTO PIZZERIA&lt;/font&gt;" vertex="1">
-          <mxGeometry height="53" width="541" x="131" y="300" as="geometry" />
+          <mxGeometry height="53" width="541" x="120" y="303" as="geometry" />
         </mxCell>
         <mxCell id="1y0lWWYBMQZ4ZxL9ILeE-23" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="REGISTER | LOGIN | CART" vertex="1">
           <mxGeometry height="30" width="196" x="474" y="314.5" as="geometry" />
